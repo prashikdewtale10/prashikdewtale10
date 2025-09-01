@@ -1,62 +1,33 @@
-Here's an example of how you can create a rate limit middleware in Esmerald:
-```
-from esmerald import Middleware
-from esmerald.requests import Request
-from esmerald.responses import Response
-from starlette.datastructures import Headers
-from typing import Callable
-from functools import wraps
-from collections import defaultdict
+# Hi there 👋, I'm Prashik Janardhan Dewtale
 
-class RateLimitMiddleware(Middleware):
-    def __init__(self, max_calls: int, time_window: int):
-        self.max_calls = max_calls
-        self.time_window = time_window
-        self.cache = defaultdict(int)
+Welcome to my GitHub!  
+I am a passionate **Software Engineer** based in Mumbai, India, specializing in building scalable and maintainable applications. With experience across diverse technologies and a strong focus on clean code, I enjoy tackling complex challenges and delivering impactful solutions.
 
-    async def __call__(self, request: Request, next: Callable[[Request], Response]) -> Response:
-        ip = request.client.host
-        current_time = int(request.timestamp)
-        if current_time - self.cache[ip] >= self.time_window:
-            self.cache[ip] = current_time
-            self.cache[(ip, 'count')] = 1
-        elif self.cache[(ip, 'count')] < self.max_calls:
-            self.cache[(ip, 'count')] += 1
-        else:
-            headers = Headers({"Retry-After": str(self.time_window)})
-            return Response(429, headers=headers)
+## 🚀 Skills & Technologies
 
-        return await next(request)
+- **Languages:** JavaScript, Python, C, C++
+- **Frameworks:** React, Node.js, Express, Django, Esmerald, Justpy, Bootstrap
+- **Tools:** Git, Docker, Kubernetes, SVN, VS-Code, Postman
+- **Other:** REST APIs, Microservices
 
-def rate_limit(max_calls: int, time_window: int):
-    def decorator(func):
-        @wraps(func)
-        async def wrapped(*args, **kwargs):
-            return await func(*args, **kwargs)
-        return wrapped
-    return decorator
-```
-This middleware uses a simple in-memory cache to store the IP addresses and their corresponding request counts. You can customize the `max_calls` and `time_window` parameters to suit your needs.
+## 📈 Projects & Achievements
 
-To use this middleware in your Esmerald API, you can add it to your application like this:
-```
-from esmerald import Esmerald
-from my_rate_limit_middleware import RateLimitMiddleware
+- 100+ public repositories showcasing projects in web development, automation, and cloud-native applications.
+- Contributor to open-source projects and active participant in tech communities.
+- [Portfolio Website](https://prashikdewtale.me)
 
-app = Esmerald(
-    ...
-    middleware=[RateLimitMiddleware(max_calls=10, time_window=60)],
-    ...
-)
-```
-This will apply the rate limit middleware to all routes in your application. If you want to apply it to specific routes only, you can use the `rate_limit` decorator:
-```
-from esmerald import Route
-from my_rate_limit_middleware import rate_limit
+## 📝 Blog & Resources
 
-@rate_limit(max_calls=5, time_window=30)
-@app.route("/")
-async def my_route():
-    ...
-```
-This will apply the rate limit to the specific route only.
+I share insights, tutorials, and guides on my personal blog:  
+[prashikdewtale.me](https://prashikdewtale.me)
+
+## 📫 Contact & Links
+
+- **Location:** Mumbai, India
+- **LinkedIn:** [Your LinkedIn Profile](#) <!-- Add URL if available -->
+- **Blog:** [prashikdewtale.me](https://prashikdewtale.me)
+- **GitHub:** [prashikdewtale10](https://github.com/prashikdewtale10)
+
+---
+
+*Let's connect and build something amazing together!*
